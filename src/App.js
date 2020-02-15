@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
-
+import {QuoteContext} from "./contexts/QuoteContext";
+import {Route, BrowserRouter as Router} from "react-router-dom";
+import Navigation from "./components/Navigation";
+import AuthForm from "./components/AuthForm";
+import PrivateRoute from "./utils/PrivateRoute";
+import QuotesList from "./components/QuotesList";
 function App() {
+  const [quotes, setQuotes] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") ? true : false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <Router>
+      <QuoteContext.Provider value={{quotes, setQuotes, loggedIn, setLoggedIn}}>
+        <div className="App">
+
+          <Navigation />
+
+          <PrivateRoute path="/quotes" component={QuotesList} />
+          <Route path="/login" render={ props => <AuthForm {...props} role="login" /> } />
+          <Route path="/register" render={ props => <AuthForm {...props} role="register" /> } />
+          
+        </div>
+      </QuoteContext.Provider>
+    </Router>
   );
 }
 
