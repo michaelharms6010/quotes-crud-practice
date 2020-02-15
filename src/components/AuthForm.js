@@ -19,7 +19,6 @@ export default function AuthForm({role, history}) {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(authInfo)
         axios.post( `https://quotes-db-mike.herokuapp.com/auth/${role}`, authInfo)
             .then(res => {
                     setLoggedIn(true);
