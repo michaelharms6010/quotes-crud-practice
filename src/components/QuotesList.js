@@ -69,7 +69,11 @@ export default function QuotesList () {
                         <h3>{item.speaker}</h3>
                         <p>{item.quote}</p> 
                     </>}
-                    <button onClick={ _ => toggleEdit(item)}>{editing ? "Submit" : "Edit Quote"}</button>
+                    {editing 
+                    ? editing === item.id 
+                        ? <button onClick={ _ => toggleEdit(item)}>Submit</button> 
+                        : <button onClick={ _ => {setEdited(item); setEditing(item.id)}}>Edit Quote</button>
+                    : <button onClick={ _ => toggleEdit(item)}>Edit Quote</button>}
                     <button onClick={ _ => deleteQuote(item.id)}>Delete Quote</button>
                 </div>
                
