@@ -21,7 +21,7 @@ export default function QuotesList () {
     }, [])
 
     const toggleEdit = quote => {
-        if (!editing) {
+        if (editing !== quote.id) {
             setEdited(quote)
             setEditing(quote.id)
         } else {
@@ -69,11 +69,7 @@ export default function QuotesList () {
                         <h3>{item.speaker}</h3>
                         <p>{item.quote}</p> 
                     </>}
-                    {editing 
-                    ? editing === item.id 
-                        ? <button onClick={ _ => toggleEdit(item)}>Submit</button> 
-                        : <button onClick={ _ => {setEdited(item); setEditing(item.id)}}>Edit Quote</button>
-                    : <button onClick={ _ => toggleEdit(item)}>Edit Quote</button>}
+                    <button onClick={_ => toggleEdit(item)}>{editing===item.id ? "Submit": "Edit Quote"} </button>
                     <button onClick={ _ => deleteQuote(item.id)}>Delete Quote</button>
                 </div>
                
