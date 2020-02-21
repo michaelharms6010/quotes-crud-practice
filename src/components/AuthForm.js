@@ -21,6 +21,7 @@ export default function AuthForm({role, history}) {
         e.preventDefault();
         axios.post( `https://quotes-db-mike.herokuapp.com/auth/${role}`, authInfo)
             .then(res => {
+                console.log(res)
                     setLoggedIn(true);
                     localStorage.setItem("token", res.data.token)
                     history.push('/quotes')
