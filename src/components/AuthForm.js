@@ -19,6 +19,8 @@ export default function AuthForm({role, history}) {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        
         axios.post( `https://quotes-db-mike.herokuapp.com/auth/${role}`, authInfo)
             .then(res => {
                 console.log(res)

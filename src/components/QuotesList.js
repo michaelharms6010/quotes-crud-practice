@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { QuoteContext} from "../contexts/QuoteContext";
 import AddQuoteForm from "./AddQuoteForm";
+import Pusher from "pusher-js";
 
 export default function QuotesList () {
     const { quotes, setQuotes } = useContext(QuoteContext);
@@ -11,13 +12,24 @@ export default function QuotesList () {
         quote: ""
     })
 
-
-
-    useEffect( _ => {
+    const getQuotes = _ => {
         axiosWithAuth().get("https://quotes-db-mike.herokuapp.com/quotes")
             .then(res => setQuotes(res.data))
             .catch(err => console.log(err))
+    }
 
+    useEffect( _ => {
+        getQuotes();
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('326bd157958340453bb2', {
+            cluster: 'us2',
+            forceTLS: true
+        });
+        var channel = pusher.subscribe('quotes');
+        channel.bind('new-quote-data', function(data) {
+            getQuotes()
+            console.log(data)
+        });
     }, [])
 
     const toggleEdit = quote => {
